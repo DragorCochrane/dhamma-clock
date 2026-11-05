@@ -224,6 +224,7 @@
   .card .links a { color: var(--accent-strong); text-decoration: none; font-weight: 600; }
   .card .links a:hover { text-decoration: underline; }
   .joinnote { font-size: 0.78rem; color: var(--ink-3); }
+  .flagnote { font-size: 0.8rem; color: var(--accent-strong); background: var(--live-bg); border-radius: 7px; padding: 6px 9px; margin: 0; }
 
   footer.notes {
     margin-top: 48px; border-top: 1px solid var(--hairline); padding-top: 20px;
@@ -288,25 +289,25 @@ const TRADITIONS = {
 // weeks = weeks-of-month filter (e.g. [2,4] = 2nd & 4th).
 const EVENTS = [
   // Insight / Vipassana
-  { id:'sangha-live', trad:'insight', name:'Sangha Live — Daily Meditation', place:'Online (UK-hosted)', status:'listed',
+  { id:'sangha-live', flag:'Re-check Nov 2026: time and join page (possibly sangha.live/daily) not yet re-confirmed.', trad:'insight', name:'Sangha Live — Daily Meditation', place:'Online (UK-hosted)', status:'listed',
     desc:'Guided sit and teaching with rotating well-known insight teachers; recordings posted same day.',
     link:'https://sangha.live/daily-meditation/',
     blocks:[{ tz:'Europe/London', days:[1,2,3,4,5], time:'07:00', mins:60 }] },
   { id:'bowerchalke', trad:'insight', name:'Bowerchalke Meditation Group', place:'Wiltshire, UK', status:'verified',
     desc:'Short daily online sit; Forest Sangha / Gaia House–connected. Zoom link by email.',
-    link:'https://gaiahouse.co.uk/local-meditation-groups/', join:'Email kennedy.five@outlook.com for the Zoom link',
+    link:'https://gaiahouse.co.uk/local-meditation-groups/', join:'Zoom link from the group contact on the Gaia House local groups page',
     blocks:[{ tz:'Europe/London', days:[0,1,2,3,4,5,6], time:'07:45', mins:30 }] },
   { id:'common-ground', trad:'insight', name:'Common Ground Meditation Center', place:'Minneapolis, MN', status:'listed',
     desc:'Early-morning Zoom sits with light guidance, followed by sitting & check-in on weekdays.',
     link:'https://commongroundmeditation.org/program/open-meditation',
     blocks:[{ tz:'America/Chicago', days:[1,2,3,4,5,6], time:'06:30', mins:45, label:'Morning sit' },
             { tz:'America/Chicago', days:[1,2,3,4,5], time:'07:30', mins:60, label:'Sitting & check-in' }] },
-  { id:'cambridge-insight', trad:'insight', name:'Cambridge Insight Meditation Center', place:'Cambridge, MA', status:'verified',
+  { id:'cambridge-insight', flag:'Re-check Nov 2026: the evening sit may now be in-person only. Confirm on the CIMC site before joining online.', trad:'insight', name:'Cambridge Insight Meditation Center', place:'Cambridge, MA', status:'verified',
     desc:'“Dharma in Daily Life” brief morning sit and reflection, plus evening sits. Free drop-ins.',
     link:'https://cambridgeinsight.org/',
     blocks:[{ tz:'America/New_York', days:[1,2,3,4,5], time:'08:45', mins:15, label:'Dharma in Daily Life' },
             { tz:'America/New_York', days:[1,2,4,5], time:'18:00', mins:45, label:'Evening sit' }] },
-  { id:'bcbs', trad:'insight', name:'The Daily Sit — Barre Center for Buddhist Studies', place:'Barre, MA', status:'verified',
+  { id:'bcbs', flag:'Re-check Nov 2026: the Daily Sit page may now list Wednesday–Friday only. Check before joining on Mon/Tue.', trad:'insight', name:'The Daily Sit — Barre Center for Buddhist Studies', place:'Barre, MA', status:'verified',
     desc:'Talks, guided sits, and Friday silence with Bill & Susan Morgan.',
     link:'https://www.buddhistinquiry.org/resources/daily-sit/',
     zoom:'https://us02web.zoom.us/j/626660347?pwd=T3R2bDVJSC9EcnFFL2lpMkszeFRudz09', join:'Zoom ID 626 660 347 · passcode 108108',
@@ -324,7 +325,7 @@ const EVENTS = [
     desc:'Volunteer-led Western insight sit and check-in; open to all, dana.',
     link:'https://aucklandinsightmeditation.org/', join:'Zoom ID 301 157 3331',
     blocks:[{ tz:'Pacific/Auckland', days:[1], time:'07:30', mins:45 }] },
-  { id:'madison', trad:'insight', name:'Madison Insight Meditation Group', place:'Madison, WI', status:'verified',
+  { id:'madison', flag:'Re-check Nov 2026: Tuesday may now start 6:30pm and Friday 7:30pm (Central). Confirm on the Meditation page.', trad:'insight', name:'Madison Insight Meditation Group', place:'Madison, WI', status:'verified',
     desc:'Hybrid sits via Google Meet; Abhayagiri-associated (Tuesday sit led by Janice Cittasubha Sheppard).',
     link:'https://madisonmeditation.org/meditation',
     blocks:[{ tz:'America/Chicago', days:[0], time:'18:00', mins:120, label:'Sunday sit' },
@@ -345,7 +346,7 @@ const EVENTS = [
             { tz:'America/Los_Angeles', days:[5], time:'19:00', mins:90, label:'Maha Sangha' }] },
 
   // Theravāda (monastic)
-  { id:'lokanta', trad:'theravada', name:'Lokanta Vihara — Bhante Sujato', place:'Sydney, AU', status:'verified',
+  { id:'lokanta', flag:'Re-check Nov 2026: the Friday session is reported to have moved from Jitsi to Kmeet (Infomaniak). Confirm the current room on lokanta.github.io.', trad:'theravada', name:'Lokanta Vihara — Bhante Sujato', place:'Sydney, AU', status:'verified',
     desc:'Weekly Friday-evening session: chanting, guided meditation, discourse and discussion. Runs on Jitsi in the browser — no install needed.',
     link:'https://lokanta.github.io/', zoom:'https://meet.jit.si/MonksinCyberspace',
     blocks:[{ tz:'Australia/Sydney', days:[5], time:'19:00', mins:105 }] },
@@ -695,11 +696,12 @@ function renderDirectory(now) {
       s += '<article class="card" id="' + ev.id + '"><div><h4 class="display">' + esc(ev.name)
          + '<span class="badge ' + ev.status + '">' + badgeText[ev.status] + '</span></h4>'
          + '<div class="place">' + esc(ev.place) + '</div></div>'
-         + '<p class="desc">' + esc(ev.desc) + '</p>';
+         + '<p class="desc">' + esc(ev.desc) + '</p>'
+         + (ev.flag ? '<p class="flagnote">⚠ ' + esc(ev.flag) + '</p>' : '');
       if (ev.blocks) {
         s += '<div class="sched">';
         for (const b of ev.blocks) {
-          const occs = blockOccurrences(b, now, 9).filter(o => o.start >= now).slice(0, 8);
+          const occs = blockOccurrences(b, now, b.weeks ? 40 : 9).filter(o => o.start >= now).slice(0, 8);
           if (!occs.length) continue;
           const times = new Map();
           for (const o of occs.slice(0, 7)) {
@@ -737,6 +739,7 @@ function initTzSelect() {
   catch { zones = ['America/New_York','America/Chicago','America/Denver','America/Los_Angeles',
     'Europe/London','Europe/Paris','Asia/Kolkata','Asia/Singapore','Australia/Perth',
     'Australia/Sydney','Pacific/Auckland','UTC']; }
+  if (!zones.includes('UTC')) zones = [...zones, 'UTC'];
   if (!zones.includes(viewTz)) zones = [viewTz, ...zones];
   sel.innerHTML = zones.map(z => '<option value="' + z + '"' + (z === viewTz ? ' selected' : '') + '>'
     + z.replace(/_/g, ' ') + '</option>').join('');
@@ -755,12 +758,17 @@ function refresh() {
 initTzSelect();
 renderFilters();
 refresh();
+let lastDirKey = '';
 setInterval(() => {
   const now = Date.now();
   const occs = allOccurrences(now);
   renderClock(now);
   renderNowNext(occs, now);
   renderRing(occs, now);
+  // The directory's "next …" dates and day/time lines go stale as time passes
+  // (and shift across DST changes); re-render hourly in the viewer's zone.
+  const key = viewTz + new Intl.DateTimeFormat('en-US', { timeZone: viewTz, day:'numeric', hour:'numeric' }).format(now);
+  if (key !== lastDirKey) { if (lastDirKey) renderDirectory(now); lastDirKey = key; }
 }, 30000);
 </script>
 </body>
