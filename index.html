@@ -496,27 +496,36 @@ function partsInTz(ts, tz) {
   partsCache.set(key, out);
   return out;
 }
-function zonedToUtc(y, m, d, hh, mm, tz) {
-  let ts = Date.UTC(y, m - 1, d, hh, mm);
-  for (let i = 0; i < 3; i++) {
-    const p = partsInTz(ts, tz);
-    const diff = Date.UTC(y, m - 1, d, hh, mm) - Date.UTC(p.y, p.m - 1, p.d, p.hh, p.mm);
-    if (!diff) break;
-    ts += diff;
-  }
-  return ts;
+// UTC offset (ms) of tz at instant ts.
+function tzOffset(ts, tz) {
+  const p = partsInTz(ts, tz);
+  return Date.UTC(p.y, p.m - 1, p.d, p.hh, p.mm) - Math.floor(ts / 60000) * 60000;
 }
+// Wall-clock time in tz → UTC instant. Tries the offsets in force just before and
+// just after the target, so it is exact on both sides of a DST change.
+// Ambiguous (fall-back) times resolve to the first occurrence; non-existent
+// (spring-forward gap) times are pushed forward by the gap, as clocks do.
+function zonedToUtc(y, m, d, hh, mm, tz) {
+  const wall = Date.UTC(y, m - 1, d, hh, mm);
+  const offA = tzOffset(wall - 36 * 3600000, tz);
+  const offB = tzOffset(wall + 36 * 3600000, tz);
+  const cands = [wall - offA, wall - offB].sort((a, b) => a - b);
+  for (const ts of cands) if (ts + tzOffset(ts, tz) === wall) return ts;
+  return wall - Math.min(offA, offB); // in a gap: use the pre-transition offset → lands after the gap
+}
+// Each calendar date in the block's tz from yesterday to +horizonDays. Steps by
+// calendar day (not by 24h), so 23- and 25-hour DST days are never skipped or doubled.
 function blockOccurrences(block, now, horizonDays) {
-  const out = []; const seen = new Set();
+  const out = [];
   const [hh, mm] = block.time.split(':').map(Number);
   const durMin = block.mins || 45;
+  const today = partsInTz(now, block.tz);
   for (let off = -1; off <= horizonDays; off++) {
-    const p = partsInTz(now + off * 86400000, block.tz);
-    const key = p.y + '-' + p.m + '-' + p.d;
-    if (seen.has(key)) continue; seen.add(key);
-    if (!block.days.includes(p.wd)) continue;
-    if (block.weeks && !block.weeks.includes(Math.ceil(p.d / 7))) continue;
-    const start = zonedToUtc(p.y, p.m, p.d, hh, mm, block.tz);
+    const cal = new Date(Date.UTC(today.y, today.m - 1, today.d + off));
+    const y = cal.getUTCFullYear(), m = cal.getUTCMonth() + 1, d = cal.getUTCDate(), wd = cal.getUTCDay();
+    if (!block.days.includes(wd)) continue;
+    if (block.weeks && !block.weeks.includes(Math.ceil(d / 7))) continue;
+    const start = zonedToUtc(y, m, d, hh, mm, block.tz);
     if (start + durMin * 60000 < now) continue;
     out.push({ start, end: start + durMin * 60000, block });
   }
