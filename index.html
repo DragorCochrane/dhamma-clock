@@ -224,6 +224,7 @@
   .card .links a { color: var(--accent-strong); text-decoration: none; font-weight: 600; }
   .card .links a:hover { text-decoration: underline; }
   .joinnote { font-size: 0.78rem; color: var(--ink-3); }
+  .flagnote { font-size: 0.8rem; color: var(--accent-strong); background: var(--live-bg); border-radius: 7px; padding: 6px 9px; margin: 0; }
 
   footer.notes {
     margin-top: 48px; border-top: 1px solid var(--hairline); padding-top: 20px;
@@ -267,7 +268,7 @@
     <p><strong>Reading the tags:</strong> <em>verified</em> — the current schedule was confirmed on the group's own site (candidate entries re-checked 9 July 2026). <em>unverified</em> — carried over from the original list; re-check pending. <em>candidate</em> — details still unconfirmed (≈ marks an approximate hour).</p>
     <p><strong>Daylight saving is handled for you.</strong> Every time is computed from the group's own time zone on the actual date, so US, UK, and southern-hemisphere clock changes are reflected automatically.</p>
     <p><strong>Not listed:</strong> Goenka-tradition virtual group sits run many times daily but are restricted to old students (those who have completed a 10-day course) — see <a href="https://pamoda.dhamma.org/en/os-vipassana/online-group-sits/" rel="noopener">dhamma.org</a>.</p>
-    <p>Everything here is free or dana (donation). Schedules drift — check the group's page before a first visit. Compiled July 2026.</p>
+    <p>Everything here is free or dana (donation). Schedules drift — check the group's page before a first visit. Compiled July 2026; audited November 2026 — a ⚠ note marks a listing whose schedule may have changed and is awaiting re-confirmation.</p>
   </footer>
 </div>
 
@@ -288,25 +289,25 @@ const TRADITIONS = {
 // weeks = weeks-of-month filter (e.g. [2,4] = 2nd & 4th).
 const EVENTS = [
   // Insight / Vipassana
-  { id:'sangha-live', trad:'insight', name:'Sangha Live — Daily Meditation', place:'Online (UK-hosted)', status:'listed',
+  { id:'sangha-live', flag:'Re-check Nov 2026: time and join page (possibly sangha.live/daily) not yet re-confirmed.', trad:'insight', name:'Sangha Live — Daily Meditation', place:'Online (UK-hosted)', status:'listed',
     desc:'Guided sit and teaching with rotating well-known insight teachers; recordings posted same day.',
     link:'https://sangha.live/daily-meditation/',
     blocks:[{ tz:'Europe/London', days:[1,2,3,4,5], time:'07:00', mins:60 }] },
   { id:'bowerchalke', trad:'insight', name:'Bowerchalke Meditation Group', place:'Wiltshire, UK', status:'verified',
     desc:'Short daily online sit; Forest Sangha / Gaia House–connected. Zoom link by email.',
-    link:'https://gaiahouse.co.uk/local-meditation-groups/', join:'Email kennedy.five@outlook.com for the Zoom link',
+    link:'https://gaiahouse.co.uk/local-meditation-groups/', join:'Zoom link from the group contact on the Gaia House local groups page',
     blocks:[{ tz:'Europe/London', days:[0,1,2,3,4,5,6], time:'07:45', mins:30 }] },
   { id:'common-ground', trad:'insight', name:'Common Ground Meditation Center', place:'Minneapolis, MN', status:'listed',
     desc:'Early-morning Zoom sits with light guidance, followed by sitting & check-in on weekdays.',
     link:'https://commongroundmeditation.org/program/open-meditation',
     blocks:[{ tz:'America/Chicago', days:[1,2,3,4,5,6], time:'06:30', mins:45, label:'Morning sit' },
             { tz:'America/Chicago', days:[1,2,3,4,5], time:'07:30', mins:60, label:'Sitting & check-in' }] },
-  { id:'cambridge-insight', trad:'insight', name:'Cambridge Insight Meditation Center', place:'Cambridge, MA', status:'verified',
+  { id:'cambridge-insight', flag:'Re-check Nov 2026: the evening sit may now be in-person only. Confirm on the CIMC site before joining online.', trad:'insight', name:'Cambridge Insight Meditation Center', place:'Cambridge, MA', status:'verified',
     desc:'“Dharma in Daily Life” brief morning sit and reflection, plus evening sits. Free drop-ins.',
     link:'https://cambridgeinsight.org/',
     blocks:[{ tz:'America/New_York', days:[1,2,3,4,5], time:'08:45', mins:15, label:'Dharma in Daily Life' },
             { tz:'America/New_York', days:[1,2,4,5], time:'18:00', mins:45, label:'Evening sit' }] },
-  { id:'bcbs', trad:'insight', name:'The Daily Sit — Barre Center for Buddhist Studies', place:'Barre, MA', status:'verified',
+  { id:'bcbs', flag:'Re-check Nov 2026: the Daily Sit page may now list Wednesday–Friday only. Check before joining on Mon/Tue.', trad:'insight', name:'The Daily Sit — Barre Center for Buddhist Studies', place:'Barre, MA', status:'verified',
     desc:'Talks, guided sits, and Friday silence with Bill & Susan Morgan.',
     link:'https://www.buddhistinquiry.org/resources/daily-sit/',
     zoom:'https://us02web.zoom.us/j/626660347?pwd=T3R2bDVJSC9EcnFFL2lpMkszeFRudz09', join:'Zoom ID 626 660 347 · passcode 108108',
@@ -324,7 +325,7 @@ const EVENTS = [
     desc:'Volunteer-led Western insight sit and check-in; open to all, dana.',
     link:'https://aucklandinsightmeditation.org/', join:'Zoom ID 301 157 3331',
     blocks:[{ tz:'Pacific/Auckland', days:[1], time:'07:30', mins:45 }] },
-  { id:'madison', trad:'insight', name:'Madison Insight Meditation Group', place:'Madison, WI', status:'verified',
+  { id:'madison', flag:'Re-check Nov 2026: Tuesday may now start 6:30pm and Friday 7:30pm (Central). Confirm on the Meditation page.', trad:'insight', name:'Madison Insight Meditation Group', place:'Madison, WI', status:'verified',
     desc:'Hybrid sits via Google Meet; Abhayagiri-associated (Tuesday sit led by Janice Cittasubha Sheppard).',
     link:'https://madisonmeditation.org/meditation',
     blocks:[{ tz:'America/Chicago', days:[0], time:'18:00', mins:120, label:'Sunday sit' },
@@ -345,7 +346,7 @@ const EVENTS = [
             { tz:'America/Los_Angeles', days:[5], time:'19:00', mins:90, label:'Maha Sangha' }] },
 
   // Theravāda (monastic)
-  { id:'lokanta', trad:'theravada', name:'Lokanta Vihara — Bhante Sujato', place:'Sydney, AU', status:'verified',
+  { id:'lokanta', flag:'Re-check Nov 2026: the Friday session is reported to have moved from Jitsi to Kmeet (Infomaniak). Confirm the current room on lokanta.github.io.', trad:'theravada', name:'Lokanta Vihara — Bhante Sujato', place:'Sydney, AU', status:'verified',
     desc:'Weekly Friday-evening session: chanting, guided meditation, discourse and discussion. Runs on Jitsi in the browser — no install needed.',
     link:'https://lokanta.github.io/', zoom:'https://meet.jit.si/MonksinCyberspace',
     blocks:[{ tz:'Australia/Sydney', days:[5], time:'19:00', mins:105 }] },
@@ -367,7 +368,7 @@ const EVENTS = [
     link:'https://buddhistinsights.org/', unscheduled:'Many sessions — times on site' },
 
   // Thai Forest
-  { id:'pfod-morning', trad:'forest', name:'PFOD Morning Meditation', place:'Portland, OR', status:'verified',
+  { id:'pfod-morning', flag:'Re-check Nov 2026: may now run Mon, Tue, Thu and Fri (not just Mon). Confirm on pdxdhamma.org.', trad:'forest', name:'PFOD Morning Meditation', place:'Portland, OR', status:'verified',
     desc:'Silent sit with optional coffee and conversation after. Portland Friends of the Dhamma (hybrid).',
     link:'https://pdxdhamma.org/', zoom:'https://us02web.zoom.us/j/84219998275',
     blocks:[{ tz:'America/Los_Angeles', days:[1], time:'07:00', mins:60 }] },
@@ -379,7 +380,7 @@ const EVENTS = [
     desc:'40-minute meditation, Dhamma reflection, then tea and conversation (hybrid).',
     link:'https://pdxdhamma.org/', zoom:'https://us02web.zoom.us/j/89578178445',
     blocks:[{ tz:'America/Los_Angeles', days:[0], time:'10:00', mins:90 }] },
-  { id:'pfod-bookish', trad:'forest', name:'PFOD Virtually Bookish', place:'Portland, OR', status:'verified',
+  { id:'pfod-bookish', flag:'Re-check Nov 2026: may have moved to 1st & 3rd Saturdays, 12:30pm Pacific. Confirm on pdxdhamma.org before joining.', trad:'forest', name:'PFOD Virtually Bookish', place:'Portland, OR', status:'verified',
     desc:'Dhamma book reading and discussion group, online only.',
     link:'https://pdxdhamma.org/', zoom:'https://us02web.zoom.us/j/82927303025',
     blocks:[{ tz:'America/Los_Angeles', days:[2], time:'18:30', mins:90, weeks:[2,4], label:'2nd & 4th Tue' }] },
@@ -395,7 +396,7 @@ const EVENTS = [
     desc:'Bodhinyana-hall group with a Zoom option; email to join.',
     link:'https://amaravati.org/visiting/regular-activities/',
     blocks:[{ tz:'Europe/London', days:[3], time:'19:30', mins:90 }] },
-  { id:'clear-mountain', trad:'forest', name:'Clear Mountain Monastery', place:'Seattle, WA', status:'verified',
+  { id:'clear-mountain', flag:'Re-check Nov 2026: the Wednesday and Sunday sessions have not been re-confirmed, and the Saturday sit may run until noon.', trad:'forest', name:'Clear Mountain Monastery', place:'Seattle, WA', status:'verified',
     desc:'Ajahn Kovilo & Ajahn Nisabho: Wednesday teaching, Saturday hybrid sit, Sunday sutta study — plus daily silent sits (times on site).',
     link:'https://clearmountainmonastery.org/',
     blocks:[{ tz:'America/Los_Angeles', days:[3], time:'18:00', mins:90, label:'Teaching' },
@@ -454,7 +455,7 @@ const EVENTS = [
     link:'https://plumvillage.org/online', unscheduled:'Daily — browse the directory' },
 
   // Tibetan
-  { id:'sravasti', trad:'tibetan', name:'Sravasti Abbey — Lay Practice Group', place:'Newport, WA', status:'verified',
+  { id:'sravasti', flag:'Re-check Nov 2026: evening practice days may now be Mon–Thu and Sat. Confirm with the Abbey.', trad:'tibetan', name:'Sravasti Abbey — Lay Practice Group', place:'Newport, WA', status:'verified',
     desc:'Follows the Abbey’s morning practice structure (Gelug). Email the coordinator for the password.',
     link:'https://sravastiabbey.org/daily-online-meditation/', join:'Zoom ID 303 640 9712 — password by email',
     blocks:[{ tz:'America/Los_Angeles', days:[0,1,2,3,4,5,6], time:'05:30', mins:60, label:'Morning practice' },
@@ -496,27 +497,36 @@ function partsInTz(ts, tz) {
   partsCache.set(key, out);
   return out;
 }
-function zonedToUtc(y, m, d, hh, mm, tz) {
-  let ts = Date.UTC(y, m - 1, d, hh, mm);
-  for (let i = 0; i < 3; i++) {
-    const p = partsInTz(ts, tz);
-    const diff = Date.UTC(y, m - 1, d, hh, mm) - Date.UTC(p.y, p.m - 1, p.d, p.hh, p.mm);
-    if (!diff) break;
-    ts += diff;
-  }
-  return ts;
+// UTC offset (ms) of tz at instant ts.
+function tzOffset(ts, tz) {
+  const p = partsInTz(ts, tz);
+  return Date.UTC(p.y, p.m - 1, p.d, p.hh, p.mm) - Math.floor(ts / 60000) * 60000;
 }
+// Wall-clock time in tz → UTC instant. Tries the offsets in force just before and
+// just after the target, so it is exact on both sides of a DST change.
+// Ambiguous (fall-back) times resolve to the first occurrence; non-existent
+// (spring-forward gap) times are pushed forward by the gap, as clocks do.
+function zonedToUtc(y, m, d, hh, mm, tz) {
+  const wall = Date.UTC(y, m - 1, d, hh, mm);
+  const offA = tzOffset(wall - 36 * 3600000, tz);
+  const offB = tzOffset(wall + 36 * 3600000, tz);
+  const cands = [wall - offA, wall - offB].sort((a, b) => a - b);
+  for (const ts of cands) if (ts + tzOffset(ts, tz) === wall) return ts;
+  return wall - Math.min(offA, offB); // in a gap: use the pre-transition offset → lands after the gap
+}
+// Each calendar date in the block's tz from yesterday to +horizonDays. Steps by
+// calendar day (not by 24h), so 23- and 25-hour DST days are never skipped or doubled.
 function blockOccurrences(block, now, horizonDays) {
-  const out = []; const seen = new Set();
+  const out = [];
   const [hh, mm] = block.time.split(':').map(Number);
   const durMin = block.mins || 45;
+  const today = partsInTz(now, block.tz);
   for (let off = -1; off <= horizonDays; off++) {
-    const p = partsInTz(now + off * 86400000, block.tz);
-    const key = p.y + '-' + p.m + '-' + p.d;
-    if (seen.has(key)) continue; seen.add(key);
-    if (!block.days.includes(p.wd)) continue;
-    if (block.weeks && !block.weeks.includes(Math.ceil(p.d / 7))) continue;
-    const start = zonedToUtc(p.y, p.m, p.d, hh, mm, block.tz);
+    const cal = new Date(Date.UTC(today.y, today.m - 1, today.d + off));
+    const y = cal.getUTCFullYear(), m = cal.getUTCMonth() + 1, d = cal.getUTCDate(), wd = cal.getUTCDay();
+    if (!block.days.includes(wd)) continue;
+    if (block.weeks && !block.weeks.includes(Math.ceil(d / 7))) continue;
+    const start = zonedToUtc(y, m, d, hh, mm, block.tz);
     if (start + durMin * 60000 < now) continue;
     out.push({ start, end: start + durMin * 60000, block });
   }
@@ -686,11 +696,12 @@ function renderDirectory(now) {
       s += '<article class="card" id="' + ev.id + '"><div><h4 class="display">' + esc(ev.name)
          + '<span class="badge ' + ev.status + '">' + badgeText[ev.status] + '</span></h4>'
          + '<div class="place">' + esc(ev.place) + '</div></div>'
-         + '<p class="desc">' + esc(ev.desc) + '</p>';
+         + '<p class="desc">' + esc(ev.desc) + '</p>'
+         + (ev.flag ? '<p class="flagnote">⚠ ' + esc(ev.flag) + '</p>' : '');
       if (ev.blocks) {
         s += '<div class="sched">';
         for (const b of ev.blocks) {
-          const occs = blockOccurrences(b, now, 9).filter(o => o.start >= now).slice(0, 8);
+          const occs = blockOccurrences(b, now, b.weeks ? 40 : 9).filter(o => o.start >= now).slice(0, 8);
           if (!occs.length) continue;
           const times = new Map();
           for (const o of occs.slice(0, 7)) {
@@ -728,6 +739,7 @@ function initTzSelect() {
   catch { zones = ['America/New_York','America/Chicago','America/Denver','America/Los_Angeles',
     'Europe/London','Europe/Paris','Asia/Kolkata','Asia/Singapore','Australia/Perth',
     'Australia/Sydney','Pacific/Auckland','UTC']; }
+  if (!zones.includes('UTC')) zones = [...zones, 'UTC'];
   if (!zones.includes(viewTz)) zones = [viewTz, ...zones];
   sel.innerHTML = zones.map(z => '<option value="' + z + '"' + (z === viewTz ? ' selected' : '') + '>'
     + z.replace(/_/g, ' ') + '</option>').join('');
@@ -746,12 +758,17 @@ function refresh() {
 initTzSelect();
 renderFilters();
 refresh();
+let lastDirKey = '';
 setInterval(() => {
   const now = Date.now();
   const occs = allOccurrences(now);
   renderClock(now);
   renderNowNext(occs, now);
   renderRing(occs, now);
+  // The directory's "next …" dates and day/time lines go stale as time passes
+  // (and shift across DST changes); re-render hourly in the viewer's zone.
+  const key = viewTz + new Intl.DateTimeFormat('en-US', { timeZone: viewTz, day:'numeric', hour:'numeric' }).format(now);
+  if (key !== lastDirKey) { if (lastDirKey) renderDirectory(now); lastDirKey = key; }
 }, 30000);
 </script>
 </body>
